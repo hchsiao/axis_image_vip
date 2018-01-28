@@ -1,0 +1,17 @@
+params:
+  # new
+  RESET_DELAY: 0
+  RESET_DURATION: 3.2
+  SIM_TIME_LIMIT: -1
+  INIT_SCALE: 0 # 3 for first true positive
+  PX_BLANKING: 180 # TODO; no need to be worse case
+
+  CLK_PERIOD: 34 # multiple of 2
+  SIM_FRAMES: 1
+
+env:
+  py_cfg: python-config
+  cc: gcc
+  prefix: cache/
+  dpi_inc: /opt/Cadence/INCISIV/cur/tools/include
+  input_path: ./src/
