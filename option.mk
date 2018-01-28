@@ -47,15 +47,15 @@ code-gen: cache-dir
 		pydpi-gen-mod &&\
 		pydpi-gen &&\
 		pydpi-gen-param
+	# merging cache
+	-$(Q)cp $(TEST_DIR)/svlog-cfg.yaml $(CACHE_DIR)
+	-$(Q)cp $(BENCH_DIR)/cache/python/* $(CACHE_DIR)/python/
+	-$(Q)cp $(BENCH_DIR)/cache/svlog/* $(CACHE_DIR)/svlog/
 	# generate project specific codes
 	$(Q)cd $(TEST_DIR) &&\
 		pydpi-gen-mod &&\
 		pydpi-gen &&\
 		pydpi-gen-param
-	# merging cache
-	-$(Q)cp $(TEST_DIR)/svlog-cfg.yaml $(CACHE_DIR)
-	-$(Q)cp $(BENCH_DIR)/cache/python/* $(CACHE_DIR)/python/
-	-$(Q)cp $(BENCH_DIR)/cache/svlog/* $(CACHE_DIR)/svlog/
 
 run: cache-dir code-gen cache/pydpi_bridge.so
 	$(Q)cd $(CACHE_DIR) &&\
