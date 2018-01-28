@@ -18,11 +18,11 @@ initial begin
 
 `ifdef DUMP_VCD_PATH
     $dumpfile(`DUMP_VCD_PATH);
-    $dumpvars();
+    $dumpvars(0, DUT);
 `endif
 `ifdef DUMP_SHM_PATH
     $shm_open(`DUMP_SHM_PATH);
-    $shm_probe(test, "ASCM");
+    $shm_probe(test.DUT, "ASCM");
 `endif
 `ifdef DUMP_FSDB_PATH
     $fsdbDumpfile(`DUMP_FSDB_PATH);
@@ -55,10 +55,19 @@ end
     .reset(~rst_n)
   );
 
-  assign axis_m_ready = axis_s_ready;
-  assign axis_s_data = axis_m_data;
-  assign axis_s_valid = axis_m_valid;
-  assign axis_s_last = axis_m_last;
+  strm_proc_wrapper #(
+  )DUT(
+    .axis_m_data(axis_m_data),
+    .axis_m_valid(axis_m_valid),
+    .axis_m_ready(axis_m_ready),
+    .axis_m_last(axis_m_last),
+    .axis_s_data(axis_s_data),
+    .axis_s_valid(axis_s_valid),
+    .axis_s_ready(axis_s_ready),
+    .axis_s_last(axis_s_last),
+    .clk(clk),
+    .rst_n(rst_n)
+  );
 
   sink #(
   )SINK(

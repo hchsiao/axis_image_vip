@@ -1,6 +1,7 @@
 import pydpi
 INIT_SCALE = pydpi.get_params()['INIT_SCALE']
 PX_BLANKING = pydpi.get_params()['PX_BLANKING']
+IMG_PATH = pydpi.get_params()['IMG_PATH']
 
 import numpy as np
 import cv2
@@ -16,7 +17,7 @@ class source(pydpi.SvModule):
   }
 
   def _reset_img(self):
-    src_img = cv2.imread('../data/img/test_128_100.bmp', cv2.IMREAD_GRAYSCALE)
+    src_img = cv2.imread(IMG_PATH, cv2.IMREAD_GRAYSCALE)
     r = 1.2**(self.__epoch)
     fw = int(src_img.shape[1]/r)
     fh = int(src_img.shape[0]/r)
