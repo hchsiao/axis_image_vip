@@ -37,6 +37,8 @@ all: run
 
 cache-dir:
 	$(Q)mkdir -p $(CACHE_DIR)
+	$(Q)mkdir -p $(CACHE_DIR)/python/
+	$(Q)mkdir -p $(CACHE_DIR)/svlog/
 
 cache/pydpi_bridge.so:
 	pydpi-build
