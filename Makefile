@@ -8,8 +8,7 @@ TEST_DIR        := $(BENCH_DIR)
 SV_INCL        := $(BENCH_DIR)
 
 SV_SRCS        := "\
-	$(BENCH_DIR)/src/axis_fixture.sv \
-	$(BENCH_DIR)/src/tb_top.sv \
+	$(BENCH_DIR)/src/fixture.sv \
 	"
 
 TEST_IMG       := $(TEST_DIR)/data/img/test_128_100.bmp

@@ -28,7 +28,7 @@ cache-dir:
 
 seq: cache-dir
 	$(Q)cd $(CACHE_DIR) &&\
-		$(PYTHON_BIN) $(TEST_DIR)/src/utils/img2axis.py $(TEST_IMG) test_pattern.txt
+		$(PYTHON_BIN) $(BENCH_DIR)/src/utils/img2axis.py $(TEST_IMG) test_pattern.txt
 
 run: cache-dir seq
 	$(Q)cd $(CACHE_DIR) &&\
