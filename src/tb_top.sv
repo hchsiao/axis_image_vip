@@ -98,7 +98,7 @@ module tb_top;
     end
   end
 
-  axis_fixture TFX
+  fixture TFX
   (
     .axis_m_data_i(axis_m_data),
     .axis_m_valid_i(axis_m_valid),

@@ -1,6 +1,6 @@
 `include "cfg.svh"
 
-module axis_fixture #(
+module fixture #(
   parameter INPUT_BITS = `INPUT_BITS,
   parameter OUTPUT_BITS = `OUTPUT_BITS,
   parameter PIPELINE_STAGES = 2
