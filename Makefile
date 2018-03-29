@@ -1,7 +1,17 @@
-TEST_DIR       := $(shell pwd)
-BENCH_DIR      := $(TEST_DIR)
+RESET_DELAY    := 1
+RESET_DURATION := 3.51
+CLOCK_PERIOD   := 33
 
-SV_SRCS        := $(TEST_DIR)/src/strm_proc_wrapper.sv
+BENCH_DIR       := $(shell pwd)
+TEST_DIR        := $(BENCH_DIR)
 
-# include python-svlog build system makefile
-include $(BENCH_DIR)/option.mk
+SV_INCL        := $(BENCH_DIR)
+
+SV_SRCS        := "\
+	$(BENCH_DIR)/src/axis_fixture.sv \
+	$(BENCH_DIR)/src/tb_top.sv \
+	"
+
+TEST_IMG       := $(TEST_DIR)/data/img/test_128_100.bmp
+
+include $(BENCH_DIR)/rules/testbench.mk
