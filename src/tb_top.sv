@@ -13,9 +13,18 @@ module tb_top;
     clk = ~clk;
   end
 
-  int in_file, out_file, scan_file;
+  int in_file, out_file, scan_file, file_len, prog_percent;
   initial
   begin
+    // count file length
+    in_file = $fopen("test_pattern.txt", "r");
+    while (!$feof(in_file))
+      scan_file = $fgetc(in_file); 
+    file_len = $ftell(in_file);
+    $fclose(in_file);
+    prog_percent = 0;
+
+    // init file handles
     in_file = $fopen("test_pattern.txt", "r");
     out_file = $fopen("result_pattern.txt", "w");
     if (!in_file || !out_file) begin
@@ -88,11 +97,17 @@ module tb_top;
           data_buff_sync <= data_buff; 
           last_buff_sync <= last_buff; 
           data_valid <= 1'b1;
+          if ($ftell(in_file)*100/file_len > prog_percent)
+          begin
+            $display("Done %d%", prog_percent);
+            prog_percent = $ftell(in_file)*100/file_len;
+          end
         end
         else
         begin
           data_valid <= 1'b0;
           $fclose(in_file);
+          $display("Input file closed");
           in_file <= 0;
         end
     end
