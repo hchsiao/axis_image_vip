@@ -4,13 +4,13 @@ include(ChipCMake)
 find_package(VCS)
 find_package(PythonInterp)
 
-set(test_bin test_pattern.bin)
+set(test_rec_file test_pattern.txt)
 set(test_image ${CMAKE_CURRENT_SOURCE_DIR}/data/img/test_128_100.bmp)
-add_custom_command(OUTPUT ${test_bin}
-  COMMAND ${PYTHON_EXECUTABLE} -B ${CMAKE_SOURCE_DIR}/utils/img2axis.py ${test_image} ${test_bin}
-  COMMENT "Generate test pattern binary file"
+add_custom_command(OUTPUT ${test_rec_file}
+  COMMAND ${PYTHON_EXECUTABLE} -B ${CMAKE_SOURCE_DIR}/utils/img2axis.py ${test_image} ${test_rec_file}
+  COMMENT "Generating test pattern record file"
   )
-add_custom_target(test_dat DEPENDS ${test_bin})
+add_custom_target(test_rec DEPENDS ${test_rec_file})
 
 set(SIM_FLAGS
 	"+define+RESET_DELAY=1"
@@ -25,5 +25,5 @@ add_testbench(pipelined_fb ${test_sources}
   DESIGN axis_image_vip
   FLAGS ${SIM_FLAGS}
   )
-add_dependencies(pipelined_fb test_dat)
+add_dependencies(pipelined_fb test_rec)
 
