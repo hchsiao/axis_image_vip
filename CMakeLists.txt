@@ -4,7 +4,10 @@ project(axis_image_vip)
 include(ChipCMake)
 
 file(GLOB design_sources src/*.sv)
-add_design(axis_image_vip ${design_sources})
+specify_design(
+  SOURCES ${design_sources}
+  NO_SYNTH
+  )
 include_directories(${CMAKE_SOURCE_DIR})
 
-add_subdirectory(test)
+add_testbench_subdirectory(test)
