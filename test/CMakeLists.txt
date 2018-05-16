@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 
 include(ChipCMake)
-find_package(VCS)
-find_package(PythonInterp)
+find_package(VCS REQUIRED)
+find_package(PythonInterp REQUIRED)
 
 set(test_rec_file test_pattern.txt)
 set(test_image ${CMAKE_CURRENT_SOURCE_DIR}/data/img/test_128_100.bmp)
