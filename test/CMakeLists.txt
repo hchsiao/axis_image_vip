@@ -22,7 +22,6 @@ endif()
 
 file(GLOB test_sources *.sv)
 add_testbench(pipelined_fb ${test_sources}
-  DESIGN axis_image_vip
   FLAGS ${SIM_FLAGS}
   )
 add_dependencies(pipelined_fb test_rec)

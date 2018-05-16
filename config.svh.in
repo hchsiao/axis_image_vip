@@ -1,0 +1,7 @@
+`ifndef CONFIG_SVH
+`define CONFIG_SVH
+
+`define SOURCE_BYTES (@SOURCE_BYTES@)
+`define SINK_BYTES   (@SINK_BYTES@)
+
+`endif
