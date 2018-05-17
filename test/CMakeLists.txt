@@ -21,8 +21,8 @@ if(${FSDB})
 endif()
 
 file(GLOB test_sources *.sv)
-add_testbench(pipelined_fb ${test_sources}
+add_testbench(feedback ${test_sources}
   FLAGS ${SIM_FLAGS}
   )
-add_dependencies(pipelined_fb test_rec)
+add_dependencies(feedback test_rec)
 
