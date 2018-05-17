@@ -9,7 +9,6 @@ specify_design(
   NO_SYNTH
   )
 
-set(param_list SOURCE_BYTES SINK_BYTES)
 configure_parameters(POSTFIX config.svh
   PARAM_LIST
     SOURCE_BYTES
