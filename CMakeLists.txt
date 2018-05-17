@@ -15,7 +15,7 @@ configure_parameters(POSTFIX config.svh
     SINK_BYTES
   )
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
+hdl_include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_testbench_subdirectory(test)
 
