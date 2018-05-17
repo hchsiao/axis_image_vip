@@ -33,19 +33,19 @@ module bench;
 
   end
 
-  logic [`SOURCE_BYTES*8-1:0]  axis_m_source_data;
+  logic [`AXIS_IMAGE_VIP_SOURCE_BYTES*8-1:0]  axis_m_source_data;
   logic                        axis_m_source_valid;
   logic                        axis_m_source_ready;
   logic                        axis_m_source_last;
 
-  logic [`SINK_BYTES*8-1:0]    axis_s_sink_data;
+  logic [`AXIS_IMAGE_VIP_SINK_BYTES*8-1:0]    axis_s_sink_data;
   logic                        axis_s_sink_valid;
   logic                        axis_s_sink_ready;
   logic                        axis_s_sink_last;
 
   axis_image_vip #(
-    .INPUT_BYTES(`SOURCE_BYTES),
-    .OUTPUT_BYTES(`SINK_BYTES)
+    .INPUT_BYTES(`AXIS_IMAGE_VIP_SOURCE_BYTES),
+    .OUTPUT_BYTES(`AXIS_IMAGE_VIP_SINK_BYTES)
   )DUT(
     .axis_s_data_i (axis_s_sink_data),
     .axis_s_valid_i(axis_s_sink_valid),
@@ -60,8 +60,8 @@ module bench;
   );
 
   pipelined_reg #(
-    .INPUT_BYTES(`SOURCE_BYTES),
-    .OUTPUT_BYTES(`SINK_BYTES)
+    .INPUT_BYTES(`AXIS_IMAGE_VIP_SOURCE_BYTES),
+    .OUTPUT_BYTES(`AXIS_IMAGE_VIP_SINK_BYTES)
   )PIPE_REG(
     .axis_s_data_i (axis_m_source_data),
     .axis_s_valid_i(axis_m_source_valid),

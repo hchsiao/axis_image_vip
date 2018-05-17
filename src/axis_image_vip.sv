@@ -1,8 +1,8 @@
 `include "config.svh"
 
 module axis_image_vip #(
-  parameter INPUT_BYTES = `SOURCE_BYTES,
-  parameter OUTPUT_BYTES = `SINK_BYTES,
+  parameter INPUT_BYTES = `AXIS_IMAGE_VIP_SOURCE_BYTES,
+  parameter OUTPUT_BYTES = `AXIS_IMAGE_VIP_SINK_BYTES,
   parameter INPUT_BITS = INPUT_BYTES*8,
   parameter OUTPUT_BITS = OUTPUT_BYTES*8,
   parameter PIPELINE_STAGES = 2
