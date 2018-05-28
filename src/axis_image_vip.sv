@@ -64,7 +64,7 @@ module axis_image_vip #(
     begin
       if (axis_s_valid_i)
       begin
-        $fwrite(out_file, "out: %d\n", axis_s_data_i); 
+        $fwrite(out_file, "data: %d, last: %d, user: %d\n", axis_s_data_i, axis_s_last_i, axis_s_user_i); 
         if (pattern_ends && axis_s_last_i)
         begin
           $fclose(out_file);
@@ -104,7 +104,10 @@ module axis_image_vip #(
       if (stuck_cycle >= TIMEOUT_CYCLE)
       begin
         $display("Warning: Timeout of %d cycles reached.", TIMEOUT_CYCLE);
-        $finish;
+        if(in_file)
+          $fclose(in_file);
+        $fclose(out_file);
+        $finish();
       end
       else if (!axis_m_valid_o || !axis_m_ready_i)
         stuck_cycle <= stuck_cycle + 1;
