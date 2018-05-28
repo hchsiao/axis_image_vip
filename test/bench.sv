@@ -37,11 +37,13 @@ module bench;
   logic                        axis_m_source_valid;
   logic                        axis_m_source_ready;
   logic                        axis_m_source_last;
+  logic                        axis_m_source_user;
 
   logic [`SINK_BYTES*8-1:0]    axis_s_sink_data;
   logic                        axis_s_sink_valid;
   logic                        axis_s_sink_ready;
   logic                        axis_s_sink_last;
+  logic                        axis_s_sink_user;
 
   axis_image_vip #(
     .INPUT_BYTES(`SOURCE_BYTES),
@@ -51,10 +53,12 @@ module bench;
     .axis_s_valid_i(axis_s_sink_valid),
     .axis_s_ready_o(axis_s_sink_ready),
     .axis_s_last_i (axis_s_sink_last),
+    .axis_s_user_i (axis_s_sink_user),
     .axis_m_data_o (axis_m_source_data),
     .axis_m_valid_o(axis_m_source_valid),
     .axis_m_ready_i(axis_m_source_ready),
     .axis_m_last_o (axis_m_source_last),
+    .axis_m_user_o (axis_m_source_user),
     .clk_i(clk),
     .rstn_i(rstn)
   );
@@ -67,10 +71,12 @@ module bench;
     .axis_s_valid_i(axis_m_source_valid),
     .axis_s_ready_o(axis_m_source_ready),
     .axis_s_last_i (axis_m_source_last),
+    .axis_s_user_i (axis_m_source_user),
     .axis_m_data_o (axis_s_sink_data),
     .axis_m_valid_o(axis_s_sink_valid),
     .axis_m_ready_i(axis_s_sink_ready),
     .axis_m_last_o (axis_s_sink_last),
+    .axis_m_user_o (axis_s_sink_user),
     .clk_i(clk),
     .rstn_i(rstn)
   );

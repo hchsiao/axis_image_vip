@@ -5,7 +5,10 @@ find_package(VCS REQUIRED)
 find_package(PythonInterp REQUIRED)
 
 set(test_rec_file test_pattern.txt)
-set(test_image ${CMAKE_CURRENT_SOURCE_DIR}/data/img/test_128_100.bmp)
+set(test_image
+  ${CMAKE_CURRENT_SOURCE_DIR}/data/img/test_128_100.bmp
+  ${CMAKE_CURRENT_SOURCE_DIR}/data/img/test_128_100.bmp
+  )
 add_custom_command(OUTPUT ${test_rec_file}
   COMMAND ${PYTHON_EXECUTABLE} -B ${CMAKE_SOURCE_DIR}/utils/img2axis.py ${test_image} ${test_rec_file}
   COMMENT "Generating test pattern record file"

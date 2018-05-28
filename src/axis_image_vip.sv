@@ -12,11 +12,13 @@ module axis_image_vip #(
   input                    axis_s_valid_i,
   output                   axis_s_ready_o,
   input                    axis_s_last_i,
+  input                    axis_s_user_i,
 
   output [OUTPUT_BITS-1:0] axis_m_data_o,
   output                   axis_m_valid_o,
   input                    axis_m_ready_i,
   output                   axis_m_last_o,
+  output                   axis_m_user_o,
 
   input                    clk_i,
   input                    rstn_i
@@ -44,6 +46,7 @@ module axis_image_vip #(
 
   logic [63:0] data_buff, data_buff_sync;
   logic [63:0] last_buff, last_buff_sync;
+  logic [63:0] user_buff, user_buff_sync;
   logic        data_valid;
   logic        tb_ready;
 
@@ -59,7 +62,7 @@ module axis_image_vip #(
       if (axis_s_valid_i)
       begin
         $fwrite(out_file, "out: %d\n", axis_s_data_i); 
-        if (axis_s_last_i)
+        if (!data_valid && axis_s_last_i)
         begin
           $fclose(out_file);
           $finish();
@@ -69,9 +72,10 @@ module axis_image_vip #(
       if (tb_ready && axis_m_ready_i)
         if (in_file && !$feof(in_file))
         begin
-          scan_file <= $fscanf(in_file, "%d,%d\n", data_buff, last_buff); 
+          scan_file <= $fscanf(in_file, "%d,%d,%d\n", data_buff, last_buff, user_buff); 
           data_buff_sync <= data_buff; 
           last_buff_sync <= last_buff; 
+          user_buff_sync <= user_buff; 
           data_valid <= 1'b1;
           if ($ftell(in_file)*100/file_len > prog_percent)
           begin
@@ -81,10 +85,13 @@ module axis_image_vip #(
         end
         else
         begin
-          data_valid <= 1'b0;
-          $fclose(in_file);
-          $display("Input file closed");
-          in_file <= 0;
+          if (data_valid)
+          begin
+            data_valid <= 1'b0;
+            $fclose(in_file);
+            $display("Input file closed");
+            in_file <= 0;
+          end
         end
     end
   end
@@ -92,6 +99,7 @@ module axis_image_vip #(
   assign axis_m_valid_o = data_valid;
   assign axis_m_data_o  = data_buff_sync[INPUT_BITS-1:0];
   assign axis_m_last_o  = (last_buff_sync > 0);
+  assign axis_m_user_o  = (user_buff_sync > 0);
   assign axis_s_ready_o = rstn_i && tb_ready;
 
 endmodule
