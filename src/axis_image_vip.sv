@@ -47,7 +47,7 @@ module axis_image_vip #(
   logic [63:0] data_buff, data_buff_sync;
   logic [63:0] last_buff, last_buff_sync;
   logic [63:0] user_buff, user_buff_sync;
-  logic        data_valid;
+  logic        data_valid, pattern_ends;
   logic        tb_ready;
 
   always @(posedge clk_i or negedge rstn_i)
@@ -55,6 +55,7 @@ module axis_image_vip #(
     if (~rstn_i)
     begin
       data_valid <= 1'b0;
+      pattern_ends <= 1'b0;
       tb_ready <= 1'b1;
     end
     else
@@ -62,7 +63,7 @@ module axis_image_vip #(
       if (axis_s_valid_i)
       begin
         $fwrite(out_file, "out: %d\n", axis_s_data_i); 
-        if (!data_valid && axis_s_last_i)
+        if (pattern_ends && axis_s_last_i)
         begin
           $fclose(out_file);
           $finish();
@@ -82,6 +83,11 @@ module axis_image_vip #(
             $display("Done %d percent", prog_percent);
             prog_percent = $ftell(in_file)*100/file_len;
           end
+          if($feof(in_file))
+          begin
+            pattern_ends <= 1'b1;
+            $display("Test pattern ends");
+          end
         end
         else
         begin
@@ -89,7 +95,6 @@ module axis_image_vip #(
           begin
             data_valid <= 1'b0;
             $fclose(in_file);
-            $display("Input file closed");
             in_file <= 0;
           end
         end
