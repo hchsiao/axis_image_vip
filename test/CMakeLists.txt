@@ -16,6 +16,7 @@ add_custom_command(OUTPUT ${test_rec_file}
 add_custom_target(test_rec DEPENDS ${test_rec_file})
 
 set(SIM_FLAGS
+  "+define+TIMEOUT_CYCLE=512"
 	"+define+RESET_DELAY=1"
 	"+define+RESET_DURATION=3.51"
 	"+define+CLOCK_PERIOD=33")

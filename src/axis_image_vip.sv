@@ -5,7 +5,7 @@ module axis_image_vip #(
   parameter OUTPUT_BYTES = `SINK_BYTES,
   parameter INPUT_BITS = INPUT_BYTES*8,
   parameter OUTPUT_BITS = OUTPUT_BYTES*8,
-  parameter PIPELINE_STAGES = 2
+  parameter TIMEOUT_CYCLE = `TIMEOUT_CYCLE
 )
 (
   input  [INPUT_BITS-1:0]  axis_s_data_i,
@@ -47,6 +47,7 @@ module axis_image_vip #(
   logic [63:0] data_buff, data_buff_sync;
   logic [63:0] last_buff, last_buff_sync;
   logic [63:0] user_buff, user_buff_sync;
+  logic [63:0] stuck_cycle;
   logic        data_valid, pattern_ends;
   logic        tb_ready;
 
@@ -57,6 +58,7 @@ module axis_image_vip #(
       data_valid <= 1'b0;
       pattern_ends <= 1'b0;
       tb_ready <= 1'b1;
+      stuck_cycle <= 0;
     end
     else
     begin
@@ -98,6 +100,16 @@ module axis_image_vip #(
             in_file <= 0;
           end
         end
+
+      if (stuck_cycle >= TIMEOUT_CYCLE)
+      begin
+        $display("Warning: Timeout of %d cycles reached.", TIMEOUT_CYCLE);
+        $finish;
+      end
+      else if (!axis_m_valid_o || !axis_m_ready_i)
+        stuck_cycle <= stuck_cycle + 1;
+      else
+        stuck_cycle <= 0;
     end
   end
 
