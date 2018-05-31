@@ -9,11 +9,11 @@ specify_design(
   NO_SYNTH
   )
 
-configure_parameters(POSTFIX config.svh
-  PARAM_LIST
-    SOURCE_BYTES
-    SINK_BYTES
+configure_parameters(
+  SOURCE_BYTES
+  SINK_BYTES
   )
+configure_file(${PROJECT_NAME}_config.svh.in ${PROJECT_NAME}_config.svh)
 
 hdl_include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
