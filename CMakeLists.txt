@@ -3,17 +3,18 @@ project(axis_image_vip)
 
 include(ChipCMake)
 
-file(GLOB design_sources src/*.sv)
-specify_design(
-  SOURCES ${design_sources}
-  NO_SYNTH
-  )
-
 configure_parameters(
   SOURCE_BYTES
   SINK_BYTES
+  TIMEOUT_CYCLE
   )
 configure_file(${PROJECT_NAME}_config.svh.in ${PROJECT_NAME}_config.svh)
+
+file(GLOB design_sources src/*.sv)
+specify_design(
+  SOURCES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}_config.svh ${design_sources}
+  NO_SYNTH
+  )
 
 hdl_include_directories(${CMAKE_CURRENT_BINARY_DIR})
 

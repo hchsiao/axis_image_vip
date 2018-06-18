@@ -1,7 +1,10 @@
 `ifndef AXIS_IMAGE_VIP_CONFIG_SVH
 `define AXIS_IMAGE_VIP_CONFIG_SVH
 
-`define SOURCE_BYTES (@SOURCE_BYTES@)
-`define SINK_BYTES   (@SINK_BYTES@)
+package axis_image_vip_config;
+  parameter SOURCE_BYTES = @SOURCE_BYTES@;
+  parameter SINK_BYTES   = @SINK_BYTES@;
+  parameter TIMEOUT_CYCLE = @TIMEOUT_CYCLE@;
+endpackage
 
 `endif
