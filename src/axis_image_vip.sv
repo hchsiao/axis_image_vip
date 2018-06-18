@@ -13,8 +13,8 @@ module axis_image_vip (
   rstn_i
 );
   import axis_image_vip_config::*;
-  parameter INPUT_BITS = SOURCE_BYTES*8;
-  parameter OUTPUT_BITS = SINK_BYTES*8;
+  parameter INPUT_BITS = SINK_BYTES*8;
+  parameter OUTPUT_BITS = SOURCE_BYTES*8;
 
   input  [INPUT_BITS-1:0]  axis_s_data_i;
   input                    axis_s_valid_i;
