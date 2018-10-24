@@ -123,7 +123,7 @@ module axis_image_vip (
     end
   end
 
-  assign axis_m_valid_o = data_valid;
+  assign axis_m_valid_o = !pattern_ends && data_valid;
   assign axis_m_data_o  = data_buff_sync[INPUT_BITS-1:0];
   assign axis_m_last_o  = (last_buff_sync > 0);
   assign axis_m_user_o  = (user_buff_sync > 0);

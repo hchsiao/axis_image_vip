@@ -1,5 +1,6 @@
 # axis_image_vip
-Visual object detector for raster-scanned streaming (AXI4-Stream) images. The hardware streams out the coordinate of each window (which is implemented as a trivial 2D counter) and the score for each window (using Viola-Jones algorithm).
+This module is used as the test bench (TB) to supply stimulus for simulation, and recieves the result. The TB data emulates an image sensor, pixels are presented in a raster-scanned order.  
+The video stream is packeged according to the Xilinx convention (see Xilinx user guide UG934).
 
 ## Dependencies
 
@@ -9,9 +10,6 @@ Visual object detector for raster-scanned streaming (AXI4-Stream) images. The ha
 #### EDA tools
   - ChipCMake (build system)
 
-## Architecture
-The variance computation unit presents only when Haar-feature mode enabled.
-
 ## Configuration
 See `config.cmake` file for parameters listing
 
@@ -19,7 +17,7 @@ See `config.cmake` file for parameters listing
 Add this repository as a submodule
 ```sh
 git submodule init # if not done yet
-git submodule add $URL_TO_THIS_REPO ip/axis_obj_detect
+git submodule add $URL_TO_THIS_REPO test/ip/axis_image_vip
 ```
 
 In the test module CMakeFileList.txt of the parent design, add this call:
@@ -30,7 +28,7 @@ add_ip(axis_image_vip
   TIMEOUT_CYCLE ${TIMEOUT_CYCLES}
   )
 ```
-And this one:
+And the following:
 ```cmake
 find_package(PythonInterp REQUIRED)
 add_custom_command(OUTPUT ${TEST_REC_FILE}
@@ -46,6 +44,13 @@ add_custom_target(test_rec DEPENDS ${TEST_REC_FILE})
 | TIMEOUT_CYCLES | Digits | terminate simulation if no output generated for this long (liveness) |
 | TEST_IMAGE | String | path to the image file (can be in any format supported by opencv) |
 | TEST_REC_FILE | String | output path for the encoded image file |
+
+Variables not listed are automatically set.
+#### Block diagram
+————————+　+——+　+————————  
+axis_image_vip　|--> |DUT |-->|axis_image_vip  
+————————+　+——+　+————————  
+
 
 ## Interface description
 
@@ -71,23 +76,39 @@ Inbound ports: \<Name\>_i; outbound ports: \<Name\>_o.
 | rstn_i | RESET | reset (active low) |
 
 ## Test plan
-The `axis_image_vip` module is used as the test bench (TB) to supply stimulus for simulation, and recieves the result. The TB data emulates an image sensor, pixels are presented in a raster-scanned order.  
-To run the simulation:
+Before simulation, this IP should be added to the simulation `IP_LIST` in `test/CMakeLists.txt`, for example:
+```cmake
+# depends on the usage, may not be exactly the same
+add_testbench(presim ${test_sources}
+  IP_LIST
+    ANOTHER_IP_1
+    ANOTHER_IP_2
+    ANOTHER_IP_3
+    axis_image_vip
+  FLAGS ${SIM_FLAGS}
+  )
+```
+
+A passthrough streaming unit is used as a dummy DUT. To run the simulation:
 ```sh
 mkdir -p impl # could also be 'build' or else, the name is not relevant
+cd impl/
 cmake -C ../config.cmake .. # initialize ChipCMake like traditional cmake
-make presim # make models are not required as dependencies are handled by cmake
+make presim
 ```
 Note if ChipCMake is not install in the system path, the flag `-DCMAKE_MODULE_PATH=$CCMK_PATH` is required.
 
-#### Block diagram
--—+　+——————————-+　+——  
-TB |-->|axis_obj_detect (DUT)　|-->|TB  
--—+　+——————————-+　+——
+The testbench can be controlled by several parameters defined in `test/CMakeLists.txt`:
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ | 
+| RESET_DELAY | Digits | reset will be asserted after this time from the start of simulation |
+| RESET_DURATION | Digits | reset will be asserted with this duration |
+| CLOCK_PERIOD | Digits | the clock period |
+| DUMP_FSDB_PATH | String | signal dump file (fsdb) name |
 
 ## Known issue
- - should not expose memory MUX parameter
  - TODO: Verify the simulation result automatically
- - Haar-feature is not working in the current branch. Trace back in the commit history for a working snapshot.
+ - TODO: Add API to control simulation
 
 
