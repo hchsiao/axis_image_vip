@@ -94,9 +94,11 @@ A passthrough streaming unit is used as a dummy DUT. To run the simulation:
 mkdir -p impl # could also be 'build' or else, the name is not relevant
 cd impl/
 cmake -C ../config.cmake .. # initialize ChipCMake like traditional cmake
-make presim
+make feedback
 ```
 Note if ChipCMake is not install in the system path, the flag `-DCMAKE_MODULE_PATH=$CCMK_PATH` is required.
+
+Every design simulate with `axis_image_vip` will generate `impl/test/result_pattern.txt` for stream data and `impl/test/novas.fsdb` for the waveform.
 
 The testbench can be controlled by several parameters defined in `test/CMakeLists.txt`:
 
